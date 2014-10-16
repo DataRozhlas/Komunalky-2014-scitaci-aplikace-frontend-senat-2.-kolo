@@ -1,0 +1,65 @@
+@import colors
+@import prefixes
+@import 'components/triangle'
+
+.ig
+  @import basics
+  @import Supplemental
+  @import Pekac
+  @import SenatKosti
+  @import Obec
+  @import Suggester
+  @import Layout
+  @import SenatObvod
+  @import Senat
+
+.ig
+  width 100%
+  height 100%
+  overflow hidden
+  position absolute
+  p
+    margin 0px
+  .browsehappy
+    position absolute
+    top 0px
+    left 0px
+    width 100%
+    background lighten(#f2b100, 50%)
+    border-bottom 2px solid #f2b100
+    padding 5px
+    z-index 8000
+  h2
+    font-size 24px
+    color #036
+    margin 0px
+  a.closebtn
+    position absolute
+    top 12px
+    left 12px
+    width 40px
+    height 40px
+    border 3px solid ColorHeadingLink
+    border-radius 50%
+    background white
+    overflow hidden
+    svg
+      position absolute
+      top -2px
+      left -2px
+      width @width
+      height @height
+      path
+        fill ColorHeadingLink
+    &:hover
+      background lighten(ColorHeadingLink, 90%)
+      cursor pointer
+    &:active
+      background ColorHeadingLink
+      svg
+        path
+          fill white
+  .firstScreen
+    padding-left 10px
+.tooltip
+  z-index 9999 !important

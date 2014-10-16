@@ -1,0 +1,113 @@
+.senat
+  width 100%
+  position absolute
+  top 0px
+  bottom 0px
+  .scrollable
+    position absolute
+    top 0px
+    left 0px
+    bottom 0px
+    overflow auto
+  h2
+    margin-left 68px
+    margin-top 23px
+  .obvody
+    .obvod
+      float left
+      clear left
+      padding-top 10px
+      padding-bottom 10px
+      padding-left 68px
+      width 100%
+      &:nth-child(2n)
+        background #eee
+      &.highlight
+        background lighten(ColorHeading, 90%)
+      h3
+        .popisek
+          display none
+          font-weight normal
+          padding-left 20px
+          font-size 13px
+          text-decoration underline
+          &:hover
+            cursor pointer
+            text-decoration none
+
+      &.highlight
+        .popisek
+          display inline
+  .senat-overview
+    height 120px
+    margin-top 43px
+    margin-left 68px
+    position relative
+    &.new-senat
+      margin-top 48px
+    h3
+      position absolute
+      top -26px
+    .senat-popisky
+      position absolute
+      bottom -13px
+      left -3px
+      .popisek
+        width 60px
+        position absolute
+        bottom 0px
+        font-size 0.7em
+        text-transform uppercase
+      .arrow
+        position absolute
+        top -5px
+        left 0px
+        triangle(8px, 5px, 'top', ColorHeading)
+    .obvod
+      position absolute
+      width 20px
+      height 20px
+      opacity 1
+      &.contested
+        opacity 0.4
+      &.new-obvod .old
+        background #eee
+      &.new-obvod.contested
+        opacity 1
+        cursor pointer
+      &.old-obvod
+        cursor help
+      .old
+        position absolute
+        width 20px
+        height 20px
+        border-radius 2px
+      .first
+      .second
+        position absolute
+        width 10px
+        height 20px
+    .obvod-new
+        opacity 1
+        .old
+          opacity 0.4
+          border-radius 0px
+          top -3px
+          left -3px
+          width 26px
+          height 26px
+      .first
+        border-top-left-radius 3px
+        border-bottom-left-radius 3px
+        left 0px
+      .second
+        border-top-right-radius 3px
+        border-bottom-right-radius 3px
+        right 0px
+
+
+  h3
+    color ColorHeading
+    float left
+    clear left
+    margin 0px

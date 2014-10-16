@@ -1,0 +1,55 @@
+.suggester-container
+  position relative
+  h2
+    margin-bottom 15px
+  .closebtn
+    transform rotate(180deg)
+    position absolute
+    left 320px
+    top 30px
+    svg
+      top -3px
+      left -3px
+    &.hidden
+      display none
+
+.subsetSelector-container
+  width 300px
+  margin-bottom 15px
+  position relative
+  z-index 999
+  input
+  ul.suggestionList
+    border 1px solid #aaa
+    border-radius 3px
+    width @width
+  ul.suggestionList
+    &:empty
+      display none
+    position absolute
+    top 30px
+    border-bottom 0px none
+    left 0px
+    list-style-type none
+    max-height 160px
+    overflow auto
+    margin 0px
+    padding 0px
+    background white
+    li
+      padding 8px 18px
+      position relative
+      .okres
+        color #666
+      &.active
+        background ColorHeadingLink
+        color white
+        cursor pointer
+        .okres
+          color #eee
+
+
+  input
+    margin 0px
+    padding 5px 10px
+    height 30px
