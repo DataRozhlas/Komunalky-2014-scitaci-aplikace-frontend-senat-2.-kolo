@@ -51,17 +51,28 @@ window.ig.SenatKosti = class SenatKosti implements utils.supplementalMixin
       ..append \g
         ..attr \transform "scale(#sx)"
         ..html ig.data.obvody_svg
-    @obvody = for [0 til 27] => {data: null}
+    @obvody = for i in [0 til 27]
+      obvodId = (i + 1) * 3
+      d = {data: null}
+      @svg.select ".obvod-#{obvodId}"
+        .datum d
+      d
     @drawSupplemental!
     @obvody_meta = window.ig.senat_obvody_meta
     @senatori = window.ig.senatori
     for senator in ig.data.senat.split "\n"
       [obvod, id, jmeno, prijmeni, strana, zkratka, barva] = senator.split "\t"
       @senatori["#{obvod}-#{id}"] = {jmeno, prijmeni, strana, zkratka, barva}
+    @obvodyElms = @svg.selectAll \.obvod
 
   redraw: ->
     if @data.okrsky_celkem == @data.okrsky_spocteno
       @heading.html "Celkové výsledky senatních voleb"
+
+    @obvodyElms
+      ..transition!
+        ..duration 600
+        ..style \fill -> it.data.kandidati.0.data.barva || \#aaa
     @updateSupplemental!
 
 
