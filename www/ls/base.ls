@@ -1,7 +1,5 @@
 init = ->
   new Tooltip!watchElements!
-
-
   container = d3.select ig.containers.base
   firstScreen =
     element: container.append \div .attr \class "firstScreen"
@@ -11,7 +9,6 @@ init = ->
     ..init!
 
   senat = new window.ig.SenatOverview container, downloadCache
-    ..element.classed \disabled yes
 
 window.ig.strany = strany = {}
 lf = String.fromCharCode 13

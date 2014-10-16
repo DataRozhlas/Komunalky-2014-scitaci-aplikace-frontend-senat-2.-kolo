@@ -25,7 +25,6 @@ window.ig.DownloadCache = class DownloadCache
   invalidate: (dataType) ->
     @items[dataType]?.invalidate!
 
-
 class CacheItem
   (@url) ->
     window.ig.Events @
@@ -46,9 +45,20 @@ class CacheItem
   download: (cb) ->
     @downloading = yes
     (err, data) <~ window.ig.utils.download @url
+    @data = data
+    @data.obvody_array = for obvodId, datum of @data.obvody
+      datum.obvodId = (parseInt obvodId, 10)
+      datum.hlasu = 0
+      for senator in datum.kandidati
+        datum.hlasu += that if senator.hlasu
+        senator.data = window.ig.senatori["#{obvodId}-#{senator.id}"]
+      datum.kandidati.sort (a, b) -> b.hlasu - a.hlasu
+      if datum.kandidati.0.hlasu > datum.hlasu / 2
+        datum.obvodDecided = true
+      datum
+
     @valid = yes
     @downloading = no
-    @data = data
     @emit \downloaded data
     cb? null data
 

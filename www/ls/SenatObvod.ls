@@ -40,6 +40,7 @@ window.ig.SenatObvod = class SenatObvod
     @data = data.obvody[@obvodId]
     return unless @data
     @kandidati = @data.kandidati
+    if @kandidati.length > 2 then @kandidati.length = 2
     @kandidati.sort (a, b) -> b.hlasu - a.hlasu
     @kandidatiElm.selectAll \span.kandidat .remove!
     celkemHlasu = 0

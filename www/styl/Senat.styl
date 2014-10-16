@@ -1,16 +1,7 @@
 .senat
   width 100%
-  position absolute
-  top 0px
-  bottom 0px
-  .scrollable
-    position absolute
-    top 0px
-    left 0px
-    bottom 0px
-    overflow auto
+  padding-left 10px
   h2
-    margin-left 68px
     margin-top 23px
   .obvody
     .obvod
@@ -18,7 +9,6 @@
       clear left
       padding-top 10px
       padding-bottom 10px
-      padding-left 68px
       width 100%
       &:nth-child(2n)
         background #eee
@@ -40,8 +30,8 @@
           display inline
   .senat-overview
     height 120px
-    margin-top 43px
-    margin-left 68px
+    margin-top 20px
+    margin-bottom 30px
     position relative
     &.new-senat
       margin-top 48px
@@ -58,6 +48,7 @@
         bottom 0px
         font-size 0.7em
         text-transform uppercase
+        transition left 0.6s
       .arrow
         position absolute
         top -5px
@@ -68,8 +59,7 @@
       width 20px
       height 20px
       opacity 1
-      &.contested
-        opacity 0.4
+      transition top 0.6s, left 0.6s
       &.new-obvod .old
         background #eee
       &.new-obvod.contested

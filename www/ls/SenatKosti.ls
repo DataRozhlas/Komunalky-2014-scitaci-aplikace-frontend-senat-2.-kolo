@@ -37,10 +37,6 @@ window.ig.SenatKosti = class SenatKosti implements utils.supplementalMixin
       d
     @drawSupplemental!
     @obvody_meta = window.ig.senat_obvody_meta
-    @senatori = window.ig.senatori
-    for senator in ig.data.senat.split "\n"
-      [obvod, id, jmeno, prijmeni, strana, zkratka, barva] = senator.split "\t"
-      @senatori["#{obvod}-#{id}"] = {jmeno, prijmeni, strana, zkratka, barva}
     @obvodyElms = @svg.selectAll \.obvod
 
   redraw: ->
@@ -78,16 +74,6 @@ window.ig.SenatKosti = class SenatKosti implements utils.supplementalMixin
   saveData: (data) ->
     return unless data
     @data = data
-    @data.obvody_array = for obvodId, datum of @data.obvody
-      datum.obvodId = (parseInt obvodId, 10)
-      datum.hlasu = 0
-      for senator in datum.kandidati
-        datum.hlasu += that if senator.hlasu
-        senator.data = @senatori["#{obvodId}-#{senator.id}"]
-      datum.kandidati.sort (a, b) -> b.hlasu - a.hlasu
-      if datum.kandidati.0.hlasu > datum.hlasu / 2
-        datum.obvodDecided = true
-      datum
     for datum, index in @data.obvody_array
       @obvody[index].data = datum
     @redraw!
