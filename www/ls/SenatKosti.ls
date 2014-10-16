@@ -15,6 +15,13 @@ window.ig.SenatKosti = class SenatKosti implements utils.supplementalMixin
     @heading = heading.append \span
       ..attr \class \main
       ..html "Průběžné výsledky senátních voleb"
+
+    @element.selectAll \.popisek .data <[Praha Brno Ostrava]> .enter!append \div
+      ..attr \class -> "popisek #{it.toLowerCase!}"
+      ..html -> it
+      ..append \div
+        ..attr \class \arrow
+
     sx = 800 / 509.8714
     @svg = @element.append \svg
       ..attr \width 509.8714 * sx
