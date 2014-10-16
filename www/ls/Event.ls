@@ -25,5 +25,6 @@ window.ig.Events = (target = null) ->
 
   target.emit = (type, ...args) ->
     list = events[type] || []
-    for cb in list
-      cb ...args
+    len = list.length
+    for i in [list.length - 1 to 0 by -1]
+      list[i] ...args
