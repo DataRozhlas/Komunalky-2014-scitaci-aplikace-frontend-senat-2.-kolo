@@ -1,7 +1,7 @@
 utils = window.ig.utils
 senatStrany =
   "KSČM"     : zkratka: "KSČM",      color: \#e3001a, countOld: 0, countNew: 0, fallbackOrdering: 1
-  "ČSSD"     : zkratka: "ČSSD",      color: \#f29400, countOld: 0, countNew: 0, fallbackOrdering: 2
+  "ČSSD"     : zkratka: "ČSSD",      color: \#FEA201, countOld: 0, countNew: 0, fallbackOrdering: 2
   "SZ"       : zkratka: "SZ",        color: \#0FB103, countOld: 0, countNew: 0, fallbackOrdering: 3
   "ANO 2011" : zkratka: "ANO",       color: \#5434A3, countOld: 0, countNew: 0, fallbackOrdering: 4
   "KDU-ČSL"  : zkratka: "KDU-ČSL",   color: \#FEE300, countOld: 0, countNew: 0, fallbackOrdering: 5
