@@ -1,39 +1,10 @@
 utils = window.ig.utils
-locations =
-  "3": [5 46]
-  "9": [10 48]
-  "6": [12 33]
-  "30": [16 35]
-  "33": [17 10]
-  "36": [21 16]
-  "42": [23 41]
-  "18": [16 52]
-  "12": [13.5 69]
-  "15": [23 67]
-  "39": [29.5 21]
-  "45": [29 33]
-  "48": [33 37]
-  "51": [31 62]
-  "54": [31 85]
-  "57": [37 73]
-  "66": [38 51]
-  "63": [44 61]
-  "81": [42 85]
-  "78": [46 73]
-  "69": [49 59]
-  "75": [48 47]
-  "21": [59 43]
-  "27": [61 28]
-  "22": [66 38]
-  "24": [69 29]
-  "72": [78 15]
-  "60": [66 73]
-
 barvy =
   "21": 53
   "24": 53
   "27": 53
   "54": 47
+
 defaultBarva = 7
 
 window.ig.SenatKosti = class SenatKosti implements utils.supplementalMixin
@@ -70,6 +41,20 @@ window.ig.SenatKosti = class SenatKosti implements utils.supplementalMixin
       @heading.html "Celkové výsledky senatních voleb"
 
     @obvodyElms
+      ..attr \data-tooltip (obvod) ~>
+        strana = barvy[obvod.data.obvodId] || defaultBarva
+        out = "<b>Senátní obvod č. #{obvod.data.obvodId}: #{@obvody_meta[obvod.data.obvodId].nazev}</b><br>"
+        if obvod.data && obvod.data.kandidati.0.hlasu
+          out += obvod.data.kandidati.slice 0, 2
+            .map (kandidat, i) ->
+              if kandidat.data
+                "#{kandidat.data.jmeno} <b>#{kandidat.data.prijmeni}</b>: <b>#{utils.percentage kandidat.hlasu / obvod.data.hlasu} %</b> (#{kandidat.data.zkratka}, #{kandidat.hlasu} hl.)"
+              else if i == 0
+                "Zatím neznámý"
+            .join "<br>"
+        out += "<br>Obvod obhajuje #{window.ig.strany[strana].zkratka}, sečteno je #{utils.percentage obvod.data.okrsky_spocteno / obvod.data.okrsky_celkem}&nbsp;% hlasů"
+        out += "<br><em>Klikněte pro podrobné výsledky</em>"
+        out
       ..transition!
         ..duration 600
         ..style \fill -> it.data.kandidati.0.data.barva || \#aaa
