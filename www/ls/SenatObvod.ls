@@ -76,7 +76,7 @@ window.ig.SenatObvod = class SenatObvod
       ..append \div
         ..attr \class \absolute
       ..append \img
-        ..attr \src ~> "./img/hlavy/#{@obvodId}-#{it.id}.jpg"
+        ..attr \src ~> "./img/hlavy-res/#{@obvodId}-#{it.id}.jpg"
     @kandidatiElm.append \div
       ..attr \class \mid
       ..html "50 %"
