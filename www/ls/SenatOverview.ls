@@ -1,12 +1,12 @@
 utils = window.ig.utils
 senatStrany =
-  "KSČM"     : zkratka: "KSČM",      color: \#e3001a, countOld: 0, countNew: 0, fallbackOrdering: 1
-  "ČSSD"     : zkratka: "ČSSD",      color: \#FEA201, countOld: 0, countNew: 0, fallbackOrdering: 2
-  "SZ"       : zkratka: "SZ",        color: \#0FB103, countOld: 0, countNew: 0, fallbackOrdering: 3
-  "ANO 2011" : zkratka: "ANO",       color: \#5434A3, countOld: 0, countNew: 0, fallbackOrdering: 4
-  "KDU-ČSL"  : zkratka: "KDU-ČSL",   color: \#FEE300, countOld: 0, countNew: 0, fallbackOrdering: 5
-  "ODS"      : zkratka: "ODS",       color: \#1C76F0, countOld: 0, countNew: 0, fallbackOrdering: 6
-  "TOP 09"   : zkratka: "TOP",       color: \#7c0042, countOld: 0, countNew: 0, fallbackOrdering: 7
+  "KSČM"     : zkratka: "KSČM",      color: \#e3001a, countOld: 0, countNew: 0, fallbackOrdering: 5
+  "ČSSD"     : zkratka: "ČSSD",      color: \#FEA201, countOld: 0, countNew: 0, fallbackOrdering: 1
+  "SZ"       : zkratka: "SZ",        color: \#0FB103, countOld: 0, countNew: 0, fallbackOrdering: 4
+  "ANO 2011" : zkratka: "ANO",       color: \#5434A3, countOld: 0, countNew: 0, fallbackOrdering: 6
+  "KDU-ČSL"  : zkratka: "KDU-ČSL",   color: \#FEE300, countOld: 0, countNew: 0, fallbackOrdering: 3
+  "ODS"      : zkratka: "ODS",       color: \#1C76F0, countOld: 0, countNew: 0, fallbackOrdering: 2
+  "TOP 09"   : zkratka: "TOP",       color: \#7c0042, countOld: 0, countNew: 0, fallbackOrdering: 6
   "NEZ"      : zkratka: "NEZ",       color: \#999,    countOld: 0, countNew: 0, fallbackOrdering: 99
 
 window.ig.SenatOverview = class SenatOverview
@@ -17,10 +17,16 @@ window.ig.SenatOverview = class SenatOverview
       ..attr \class \scrollable
     @scrollable.append \h2
       ..html "Nové složení senátu"
+      ..append \span
+        ..attr \class "subtitle"
+        ..html "Zobrazit dosavadní složení senátu&hellip;"
+        ..on \click @~showOldSenat
     @obvody_meta = window.ig.senat_obvody_meta
+    @newSenatElm = @scrollable.append \div
+      ..attr \class "new-senat senat-overview"
     @oldSenatElm = @scrollable.append \div
-      ..attr \class "old-senat senat-overview"
-    @senatPopisky = @oldSenatElm.append \div
+
+    @senatPopisky = @newSenatElm.append \div
       ..attr \class \senat-popisky
     @obvodyElm = @scrollable.append \div
       ..attr \class \obvody
@@ -31,7 +37,7 @@ window.ig.SenatOverview = class SenatOverview
       @data = data
       @updateAllSenat!
     @data = data
-    @oldSenat = {}
+    @newSenat = {}
     lf = String.fromCharCode 13
     for line in window.ig.data.old_senat.split "\n"
       [obvodId, jmeno, strana] = line.split "\t"
@@ -44,14 +50,14 @@ window.ig.SenatOverview = class SenatOverview
         s.countOld++
         s
 
-      @oldSenat[obvodId] =
+      @newSenat[obvodId] =
         old: {jmeno, strana, color}
         contested: data.obvody[obvodId] != void
         stranaObj: stranaObj
         obvodId: obvodId
     @obvodElements = {}
     @senatObvody = for obvodId, obvod of data.obvody
-      @oldSenat[obvodId].new = obvod
+      @newSenat[obvodId].new = obvod
       obvod.hlasu = 0
       for kandidat in obvod.kandidati
         obvod.hlasu += kandidat.hlasu
@@ -71,10 +77,10 @@ window.ig.SenatOverview = class SenatOverview
     @updateAllSenat!
 
   drawAllSenat: ->
-    @senatori = for obvod, senator of @oldSenat
+    @senatori = for obvod, senator of @newSenat
       senator
 
-    @oldSenatObvody = @oldSenatElm.selectAll \div.old-obvod .data @senatori .enter!append \div
+    @newSenatObvody = @newSenatElm.selectAll \div.old-obvod .data @senatori .enter!append \div
       ..attr \class "obvod old-obvod"
       ..classed \contested (.contested)
       ..append \div
@@ -96,7 +102,7 @@ window.ig.SenatOverview = class SenatOverview
   updateAllSenat: (kandidatOrder = 0) ->
     kostSide = 28px
     rows = 4
-    for obvodId, datum of @oldSenat
+    for obvodId, datum of @newSenat
       if @data.obvody[obvodId] isnt void
         {zkratka} = @data.obvody[obvodId].kandidati[kandidatOrder].data
         s = senatStrany[zkratka] || senatStrany["NEZ"]
@@ -141,12 +147,12 @@ window.ig.SenatOverview = class SenatOverview
       ..select \.content .html (.zkratka)
       ..style \left -> "#{it.col * kostSide}px"
 
-    @oldSenatObvody
+    @newSenatObvody
       ..style \left (d, i) ->
         "#{d.col * kostSide}px"
       ..style \top (d, i) ->
         "#{d.row * kostSide}px"
-    @oldSenatObvody.filter (.new)
+    @newSenatObvody.filter (.new)
       ..select \.old
         ..style \background-color (it, i) ->
           if it.new.kandidati[kandidatOrder].hlasu
@@ -168,6 +174,79 @@ window.ig.SenatOverview = class SenatOverview
           out += "<br>#{it.old.jmeno}, #{it.old.strana}"
         else
           out += "<br>Obvod obhajuje #{it.old.jmeno}, #{it.old.strana}"
+        out
+
+  showOldSenat: ->
+    @oldSenatElm
+      ..attr \class "old-senat senat-overview"
+      ..append \h2
+        ..html "Dosavadní složení senátu"
+    @oldSenatPopisky = @oldSenatElm.append \div
+      ..attr \class \senat-popisky
+    @oldSenat = {}
+    lf = String.fromCharCode 13
+    for line in window.ig.data.old_senat.split "\n"
+      [obvodId, jmeno, strana] = line.split "\t"
+      obvodId = parseInt obvodId, 10
+      continue unless obvodId
+      strana .= replace lf, ''
+      color = senatStrany[strana]?color
+      ordering = senatStrany[strana]?fallbackOrdering || 99
+      @oldSenat[obvodId] =
+        old: {jmeno, strana, color}
+        contested: no
+        ordering: ordering
+        obvodId: obvodId
+    kostSide = 28px
+    rows = 4
+    senatori = for obvod, senator of @oldSenat
+      senator
+    senatori.sort (a, b) ->
+      | a.ordering - b.ordering => that
+      | a.contested - b.contested => that
+      | a.obvodId - b.obvodId => that
+    console.log senatori.map (.ordering)
+    row = -1
+    col = -1.5
+    lastStrana = null
+    for senator, index in senatori
+      row++
+      if lastStrana != senator.ordering
+        lastStrana = senator.ordering
+        col += 1.5
+        row = 0
+        @oldSenatPopisky.append \div
+          ..html ->
+            s = senator.old.strana
+            if s == "STAN" then s = "Nezávislí"
+            s
+          ..style \left "#{col * kostSide}px"
+          ..attr \class \popisek
+          ..append \div
+            ..attr \class \arrow
+      if row >= rows
+        row = 0
+        col++
+      senator.row = row
+      senator.col = col
+    newSenatori = senatori.filter (.new)
+    utils.resetStranyColors!
+
+    @oldSenatObvody = @oldSenatElm.selectAll \div.old-obvod .data senatori .enter!append \div
+      ..attr \class "obvod old-obvod"
+      ..classed \contested (.contested)
+      ..style \left (d, i) ->
+        "#{d.col * kostSide}px"
+      ..style \top (d, i) ->
+        "#{d.row * kostSide}px"
+      ..append \div
+        ..attr \class \old
+        ..style \background-color (it, i) ->
+          it.old.color || \#999
+      ..attr \data-tooltip ~>
+        out = ""
+        out += "<b>Senátní obvod č. #{it.obvodId}: #{@obvody_meta[it.obvodId].nazev}</b>"
+        out += "<br>#{it.old.jmeno}, #{it.old.strana}"
         out
 
   highlight: (obvodId) ->
