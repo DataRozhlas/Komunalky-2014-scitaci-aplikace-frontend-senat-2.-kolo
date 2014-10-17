@@ -1,25 +1,39 @@
 .pekacek
-  height 160px
+  height 170px
   position relative
   h2
     margin-top 20px
   .strana
     position absolute
-    bottom -20px
+    bottom 0px
+    height 30px
+    background yellow
     font-size 0.7em
     font-variant small-caps
+    transition left 0.6s
     .popisek
       position absolute
       bottom 0px
       left 1px
       width (28px * 3 + 17)
-      text-align center
       border-top 1px solid #666
+      height 0px
+      transition height 0.6s
+      span
+        position absolute
+        top 0px
+        width 100%
+        text-align center
+        transition top 0.6s
+    &.losses
+      .popisek
+        height (28px * 5)
+        span
+          top @height
   .kosti
     position relative
-    margin-top 16px
+    margin-top 6px
     left 5px
-    height (@height - 35px)
     .kost
       position absolute
       width 20px
@@ -27,3 +41,13 @@
       float left
       background black
       margin 0px 8px 8px 0px
+      transition transform 0.6s, left 0.6s, top 0.6s
+      transform scale(0) rotate(90deg)
+      &.active
+        transform scale(1) rotate(0deg)
+  .kosti
+    height (@height - 35px)
+  &.losses
+    height 260px
+    .kosti
+      height (@height - 35px)
