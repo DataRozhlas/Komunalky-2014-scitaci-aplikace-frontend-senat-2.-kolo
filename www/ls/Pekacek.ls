@@ -36,11 +36,15 @@ window.ig.Pekacek = class Pekacek
     kostInCol = 3
     stranyZiskyAssoc = {}
     for obvod in @contestedObvody
-      stranyZiskyAssoc[obvod.new.data.zkratka] ?= []
-      stranyZiskyAssoc[obvod.new.data.zkratka].push obvod
+      zkratka = if senatStrany[obvod.new.data.zkratka] then obvod.new.data.zkratka else "NEZ"
+      stranyZiskyAssoc[zkratka] ?= []
+      stranyZiskyAssoc[zkratka].push obvod
     stranyZisky = for zkratka, obvody of stranyZiskyAssoc
       {zkratka, zisk: obvody.length, obvody}
-    stranyZisky.sort (a, b) -> b.zisk - a.zisk
+    stranyZisky.sort (a, b) ->
+      | a.zkratka == "NEZ" => 1
+      | b.zkratka == "NEZ" => -1
+      | _ => b.zisk - a.zisk
     stranyZiskyIndices = {}
     for {zkratka, obvody}:strana, index in stranyZisky
       strana.index = index
@@ -50,6 +54,7 @@ window.ig.Pekacek = class Pekacek
         dB = b.new.hlasu - b.new2.hlasu
         dB - dA
       for obvod, index in obvody
+        obvod.colStrana = strana
         obvod.index = index
 
     @strany = @kosti.selectAll \.strana .data stranyZisky, (.zkratka)
@@ -58,27 +63,26 @@ window.ig.Pekacek = class Pekacek
         ..append \div
           ..attr \class \popisek
           ..html (.zkratka)
-        ..append \div
-          ..attr \class \kosti
       ..exit!remove!
-      ..style \left ~> "#{kostInCol * it.index * (@kostSide + 1)}px"
-      ..select \.kosti
-        ..selectAll \.kost.active .data (.obvody), (.obvodId)
-          ..enter!append \div
-            ..attr \class "kost active"
-          ..exit!
-            ..classed \active \no
-            ..transition!
-              ..delay 800
-              ..remove!
-          ..style \left ~>
-            "#{(it.index % kostInCol) * @kostSide}px"
-          ..style \bottom ~>
-            "#{(Math.floor it.index / kostInCol) * @kostSide}px"
-          ..style \background-color ->
-            it.new.data.barva || '#999'
-          ..attr \data-tooltip ~>
-            it.new.hlasu - it.new2.hlasu
+      ..style \left ~> "#{(kostInCol + 1) * it.index * (@kostSide + 1)}px"
+    @kosti.selectAll \.kost.active .data @contestedObvody, (.obvodId)
+      ..enter!append \div
+        ..attr \class "kost active"
+      ..exit!
+        ..classed \active \no
+        ..transition!
+          ..delay 800
+          ..remove!
+      ..style \left ~>
+        l = (kostInCol + 1) * it.colStrana.index * (@kostSide + 1) + 0.5 * @kostSide
+        l += (it.index % kostInCol) * @kostSide
+        "#{l}px"
+      ..style \bottom ~>
+        "#{(Math.floor it.index / kostInCol) * @kostSide}px"
+      ..style \background-color ->
+        it.new.data.barva || '#999'
+      ..attr \data-tooltip ~>
+        it.new.hlasu - it.new2.hlasu
     # @kosti.selectAll \.kost.active
 
   redrawLossess: ->
