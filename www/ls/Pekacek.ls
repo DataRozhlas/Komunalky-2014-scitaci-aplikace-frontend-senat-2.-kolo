@@ -31,6 +31,7 @@ window.ig.Pekacek = class Pekacek
           title.html "Získané mandáty"
           subtitle.html "Zobrazit zisky a ztráty stran&hellip;"
         @redraw!
+    @drawArrows!
     @displayed = "mandates"
     @cacheItem = @downloadCache.getItem "senat"
     (err, data) <~ @cacheItem.get
@@ -47,6 +48,7 @@ window.ig.Pekacek = class Pekacek
       | otherwise => @redrawLossess!
 
   redrawMandates: ->
+    @arrows.classed \disabled yes
     stranyZiskyAssoc = {}
     for obvod in @contestedObvody
       zkratka = if senatStrany[obvod.new.data.zkratka] then obvod.new.data.zkratka else "NEZ"
@@ -75,7 +77,8 @@ window.ig.Pekacek = class Pekacek
     @strany.classed \losses no
     @kosti.selectAll \.kost.active .data @contestedObvody
       ..enter!append \div
-        ..attr \class "kost active"
+        ..attr \class "kost"
+        ..transition!delay 1 .attr \class "kost active"
       ..exit!
         ..classed \active no
         ..transition!
@@ -107,6 +110,7 @@ window.ig.Pekacek = class Pekacek
         out
 
   redrawLossess: ->
+    @arrows.classed \disabled no
     @element.classed \losses yes
     bilanceAssoc = {}
     bilances = for zkratka, data of senatStrany
@@ -156,7 +160,8 @@ window.ig.Pekacek = class Pekacek
     @strany.classed \losses yes
     @kosti.selectAll \.kost.active .data bilanceKosti
       ..enter!append \div
-        ..attr \class "kost active"
+        ..attr \class "kost"
+        ..transition!delay 1 .attr \class "kost active"
       ..exit!
         ..classed \active no
         ..transition!
@@ -219,3 +224,17 @@ window.ig.Pekacek = class Pekacek
             d
           obvod.new = @data.obvody[obvodId].kandidati[0]
           obvod.new2 = @data.obvody[obvodId].kandidati[1]
+  drawArrows: ->
+    @arrows = @element.append \div
+      ..attr \class \arrows
+      ..append \div
+        ..attr \class "arrow arrow-zisky"
+        ..append \span
+          ..html "Zisky"
+        ..append \div
+      ..append \div
+        ..attr \class "arrow arrow-ztraty"
+        ..append \span
+          ..html "Ztráty"
+        ..append \div
+

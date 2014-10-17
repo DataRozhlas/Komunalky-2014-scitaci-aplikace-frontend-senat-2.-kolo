@@ -52,7 +52,7 @@
       float left
       background black
       margin 0px 8px 8px 0px
-      transition transform 0.6s, left 0.6s, top 0.6s
+      transition transform 0.6s, left 0.6s, bottom 0.6s
       transform scale(0) rotate(90deg)
       &.active
         transform scale(1) rotate(0deg)
@@ -62,3 +62,31 @@
     height 260px
     .kosti
       height (@height - 35px)
+  .arrows.disabled
+    display none
+  .arrow
+    position absolute
+    bottom 0px
+    font-variant small-caps
+    font-size 0.7em
+    text-transform uppercase
+    &.arrow-zisky
+      bottom (28px * 4.5)
+      left 14px
+      padding-left 14px
+      div
+        position absolute
+        top 5px
+        left 0px
+        triangle(8px, 5px, 'top', ColorHeading)
+    &.arrow-ztraty
+      bottom (28px * 5.2)
+      left (28px * 8 * 4 - 28px)
+      padding-right 14px
+      div
+        position absolute
+        bottom 5px
+        right 0px
+        triangle(8px, 5px, 'bottom', ColorHeading)
+
+
