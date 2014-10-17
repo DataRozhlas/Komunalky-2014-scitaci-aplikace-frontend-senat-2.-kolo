@@ -1,7 +1,7 @@
 window.ig.DownloadCache = class DownloadCache
   ->
     @items = {}
-    @prefix = "//smzkomunalky.blob.core.windows.net/vysledky/"
+    @prefix = "//smzkomunalky.blob.core.windows.net/vysledky-2kolo/"
     # @prefix = "/komunalky-14-backend/data/output_formatted/"
 
   get: (dataType, cb) ->

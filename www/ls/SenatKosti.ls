@@ -47,7 +47,8 @@ window.ig.SenatKosti = class SenatKosti implements utils.supplementalMixin
       ..attr \data-tooltip (obvod) ~>
         strana = barvy[obvod.data.obvodId] || defaultBarva
         out = "<b>Senátní obvod č. #{obvod.data.obvodId}: #{@obvody_meta[obvod.data.obvodId].nazev}</b><br>"
-        if obvod.data && obvod.data.kandidati.0.hlasu
+        if not obvod.data.hlasu then obvod.data.hlasu = 1
+        if obvod.data
           out += obvod.data.kandidati.slice 0, 2
             .map (kandidat, i) ->
               if kandidat.data
@@ -60,7 +61,8 @@ window.ig.SenatKosti = class SenatKosti implements utils.supplementalMixin
         out
       ..transition!
         ..duration 600
-        ..style \fill -> it.data.kandidati.0.data.barva || \#aaa
+        ..style \fill ->
+          it.data.kandidati.0.hlasu && it.data.kandidati.0.data.barva || \#aaa
     @updateSupplemental!
 
 

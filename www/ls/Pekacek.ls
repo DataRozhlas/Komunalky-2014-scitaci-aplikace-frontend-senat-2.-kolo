@@ -75,7 +75,7 @@ window.ig.Pekacek = class Pekacek
     @strany = @kosti.selectAll \.strana .data stranyZisky, (.zkratka)
     @resortStrany!
     @strany.classed \losses no
-    @kosti.selectAll \.kost.active .data @contestedObvody
+    @kosti.selectAll \.kost.active .data (@contestedObvody.filter -> it.new.hlasu)
       ..enter!append \div
         ..attr \class "kost"
         ..transition!delay 1 .attr \class "kost active"
@@ -99,7 +99,7 @@ window.ig.Pekacek = class Pekacek
           out += [it.new, it.new2]
             .map (kandidat, i) ->
               if kandidat.data
-                "#{kandidat.data.jmeno} <b>#{kandidat.data.prijmeni}</b>: <b>#{utils.percentage kandidat.hlasu / (it.new.hlasu + it.new2.hlasu)} %</b> (#{kandidat.data.zkratka}, #{kandidat.hlasu} hl.)"
+                "#{kandidat.data.jmeno} <b>#{kandidat.data.prijmeni}</b>: <b>#{utils.percentage kandidat.hlasu / (it.new.hlasu + it.new2.hlasu || 1)} %</b> (#{kandidat.data.zkratka}, #{kandidat.hlasu} hl.)"
               else if i == 0
                 "Zatím neznámý"
             .join "<br>"
@@ -121,6 +121,7 @@ window.ig.Pekacek = class Pekacek
         barva: data.color
       bilanceAssoc[zkratka] = lossObj
     for obvod in @contestedObvody
+      continue unless obvod.new.hlasu
       newZkratka = if senatStrany[obvod.new.data.zkratka] then obvod.new.data.zkratka else "NEZ"
       oldZkratka = if senatStrany[obvod.old.strana] then obvod.old.strana else "NEZ"
       if newZkratka != oldZkratka

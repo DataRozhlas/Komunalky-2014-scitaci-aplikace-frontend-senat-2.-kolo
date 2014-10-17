@@ -45,12 +45,15 @@
       transform scale(0) rotate(90deg)
       &.active
         transform scale(1) rotate(0deg)
+        cursor help
   .kosti
     height (@height - 35px)
   &.losses
     height 260px
     .kosti
       height (@height - 35px)
+      .kost.active
+        cursor default
   .arrows.disabled
     display none
   .arrow

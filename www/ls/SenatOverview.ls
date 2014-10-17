@@ -108,6 +108,8 @@ window.ig.SenatOverview = class SenatOverview
       if @data.obvody[obvodId] isnt void
         {zkratka} = @data.obvody[obvodId].kandidati[kandidatOrder].data
         s = senatStrany[zkratka] || senatStrany["NEZ"]
+        unless @data.obvody[obvodId].volilo
+          s = senatStrany["NEZ"]
         s.countNew++
         datum.stranaObj?countNew--
         datum.stranaObj = s
@@ -164,11 +166,11 @@ window.ig.SenatOverview = class SenatOverview
       ..attr \data-tooltip ~>
         out = ""
         out += "<b>Senátní obvod č. #{it.obvodId}: #{@obvody_meta[it.obvodId].nazev}</b><br>"
-        if it.new && it.new.kandidati[kandidatOrder].hlasu
+        if it.new
           out += it.new.kandidati.slice 0, 2
             .map (kandidat, i) ->
               if kandidat.data
-                "#{kandidat.data.jmeno} <b>#{kandidat.data.prijmeni}</b>: <b>#{utils.percentage kandidat.hlasu / it.new.hlasu} %</b> (#{kandidat.data.zkratka}, #{kandidat.hlasu} hl.)"
+                "#{kandidat.data.jmeno} <b>#{kandidat.data.prijmeni}</b>: <b>#{utils.percentage kandidat.hlasu / (it.new.hlasu || 1)} %</b> (#{kandidat.data.zkratka}, #{kandidat.hlasu} hl.)"
               else if i == 0
                 "Zatím neznámý"
             .join "<br>"
