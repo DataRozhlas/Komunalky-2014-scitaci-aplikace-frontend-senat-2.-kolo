@@ -8,10 +8,11 @@ senatStrany =
   "TOP 09"   : zkratka: "TOP"     color: \#7c0042
   "NEZ"      : zkratka: "NEZ"     color: \#999
 lf = String.fromCharCode 13
-
+utils = window.ig.utils
 window.ig.Pekacek = class Pekacek
   kostSide: 28px
   (parentElement, @downloadCache) ->
+    @obvody_meta = window.ig.senat_obvody_meta
     @element = parentElement.append \div
       ..attr \class \pekacek
     @element.append \h2
@@ -82,7 +83,21 @@ window.ig.Pekacek = class Pekacek
       ..style \background-color ->
         it.new.data.barva || '#999'
       ..attr \data-tooltip ~>
-        it.new.hlasu - it.new2.hlasu
+        out = ""
+        out += "<b>Senátní obvod č. #{it.obvodId}: #{@obvody_meta[it.obvodId].nazev}</b><br>"
+        if it.new
+          out += [it.new, it.new2]
+            .map (kandidat, i) ->
+              if kandidat.data
+                "#{kandidat.data.jmeno} <b>#{kandidat.data.prijmeni}</b>: <b>#{utils.percentage kandidat.hlasu / (it.new.hlasu + it.new2.hlasu)} %</b> (#{kandidat.data.zkratka}, #{kandidat.hlasu} hl.)"
+              else if i == 0
+                "Zatím neznámý"
+            .join "<br>"
+        if it.obvodId % 3
+          out += "<br>#{it.old.jmeno}, #{it.old.strana}"
+        else
+          out += "<br>Obvod obhajuje #{it.old.jmeno}, #{it.old.strana}"
+        out
     # @kosti.selectAll \.kost.active
 
   redrawLossess: ->
