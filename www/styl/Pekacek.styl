@@ -1,15 +1,30 @@
 .pekacek
+  height 160px
+  position relative
   h2
     margin-top 20px
-  .kosti
-    position relative
-    height 200px
-    width 980px
-    background yellow
-    margin-top 16px
-    .kost
-      width 20px
-      height 20px
-      float left
-      background black
-      margin 0px 8px 8px 0px
+  .strana
+    position absolute
+    width (28px * 3 + 2)
+    height @height
+    font-size 0.7em
+    font-variant small-caps
+    .popisek
+      position absolute
+      bottom 0px
+      left 1px
+      width (28px * 3 )
+      text-align center
+      border-top 1px solid #666
+    .kosti
+      position relative
+      margin-top 16px
+      left 5px
+      height (@height - 35px)
+      .kost
+        position absolute
+        width 20px
+        height 20px
+        float left
+        background black
+        margin 0px 8px 8px 0px

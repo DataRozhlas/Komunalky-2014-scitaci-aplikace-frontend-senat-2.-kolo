@@ -10,6 +10,7 @@ senatStrany =
 lf = String.fromCharCode 13
 
 window.ig.Pekacek = class Pekacek
+  kostSide: 28px
   (parentElement, @downloadCache) ->
     @element = parentElement.append \div
       ..attr \class \pekacek
@@ -32,16 +33,52 @@ window.ig.Pekacek = class Pekacek
 
 
   redrawMandates: ->
-    @kosti.selectAll \.kost.active .data @contestedObvody, (.obvodId)
-      ..enter!append \div
-        ..attr \class "kost active"
-      ..exit!
-        ..classed \active \no
-        ..transition!
-          ..delay 800
-          ..remove!
-      ..style \background-color ->
-        it.new.data.barva || '#999'
+    kostInCol = 3
+    stranyZiskyAssoc = {}
+    for obvod in @contestedObvody
+      stranyZiskyAssoc[obvod.new.data.zkratka] ?= []
+      stranyZiskyAssoc[obvod.new.data.zkratka].push obvod
+    stranyZisky = for zkratka, obvody of stranyZiskyAssoc
+      {zkratka, zisk: obvody.length, obvody}
+    stranyZisky.sort (a, b) -> b.zisk - a.zisk
+    stranyZiskyIndices = {}
+    for {zkratka, obvody}:strana, index in stranyZisky
+      strana.index = index
+      stranyZiskyIndices[zkratka] = index
+      obvody.sort (a, b) ->
+        dA = a.new.hlasu - a.new2.hlasu
+        dB = b.new.hlasu - b.new2.hlasu
+        dB - dA
+      for obvod, index in obvody
+        obvod.index = index
+
+    @strany = @kosti.selectAll \.strana .data stranyZisky, (.zkratka)
+      ..enter!.append \div
+        ..attr \class \strana
+        ..append \div
+          ..attr \class \popisek
+          ..html (.zkratka)
+        ..append \div
+          ..attr \class \kosti
+      ..exit!remove!
+      ..style \left ~> "#{kostInCol * it.index * (@kostSide + 1)}px"
+      ..select \.kosti
+        ..selectAll \.kost.active .data (.obvody), (.obvodId)
+          ..enter!append \div
+            ..attr \class "kost active"
+          ..exit!
+            ..classed \active \no
+            ..transition!
+              ..delay 800
+              ..remove!
+          ..style \left ~>
+            "#{(it.index % kostInCol) * @kostSide}px"
+          ..style \bottom ~>
+            "#{(Math.floor it.index / kostInCol) * @kostSide}px"
+          ..style \background-color ->
+            it.new.data.barva || '#999'
+          ..attr \data-tooltip ~>
+            it.new.hlasu - it.new2.hlasu
     # @kosti.selectAll \.kost.active
 
   redrawLossess: ->
@@ -75,3 +112,4 @@ window.ig.Pekacek = class Pekacek
             @contestedObvody.push d
             d
           obvod.new = @data.obvody[obvodId].kandidati[0]
+          obvod.new2 = @data.obvody[obvodId].kandidati[1]

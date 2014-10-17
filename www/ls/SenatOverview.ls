@@ -104,7 +104,7 @@ window.ig.SenatOverview = class SenatOverview
         datum.stranaObj?countNew--
         datum.stranaObj = s
 
-    @senatori.sort (a, b) ->
+    @senatori` (a, b) ->
       | (b.stranaObj.countOld + b.stranaObj.countNew) - (a.stranaObj.countOld + a.stranaObj.countNew) => that
       | b.stranaObj.fallbackOrdering - a.stranaObj.fallbackOrdering => that
       | a.contested - b.contested => that
