@@ -22,7 +22,7 @@ externalData =
 preferScripts = <[ utils.js postInit.js _loadData.js ../data.js init.js _loadExternal.js]>
 deferScripts = <[ kandidatka.js base.js ]>
 develOnlyScripts = <[ _loadData.js _loadExternal.js]>
-gzippable = <[ www/index.html www/script.js ]>
+gzippable = <[ www/__index.html www/script.js ]>
 build-styles = (options = {}, cb) ->
   require! cssmin
   (err, [external, local]) <~ async.parallel do
@@ -201,7 +201,14 @@ inject-index = (cb) ->
     minifyJS: 1
     minifyCSS: 1
   index = htmlmin.minify index, htmlminConfig
-  <~ fs.writeFile "#__dirname/www/index.html", index
+  <~ fs.writeFile "#__dirname/www/__index.html", index
+  cb?!
+
+move-new-indexes = (cb) ->
+  console.log "Moving indexes"
+  <~ async.parallel do
+    * -> fs.rename "#__dirname/www/__index.html", "#__dirname/www/index.html", it
+      -> fs.rename "#__dirname/www/__index.html.gz", "#__dirname/www/index.html.gz", it
   cb?!
 
 task \build ->
@@ -224,6 +231,7 @@ task \deploy ->
   <~ combine-scripts compression: yes
   <~ inject-index!
   <~ gzip-files!
+  <~ move-new-indexes
 
 task \build-styles ->
   copy-index!
