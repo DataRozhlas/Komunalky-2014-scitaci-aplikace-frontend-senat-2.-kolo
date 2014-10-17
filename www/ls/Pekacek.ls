@@ -202,7 +202,8 @@ window.ig.Pekacek = class Pekacek
     @data = data
     if @contestedObvody
       for obvodId, datum of @data.obvody
-        @contestedObvodyAssoc[obvodId].new = datum
+        @contestedObvodyAssoc[obvodId].new = datum.kandidati.0
+        @contestedObvodyAssoc[obvodId].new2 = datum.kandidati.1
     else
       @contestedObvody      ?= []
       @contestedObvodyAssoc ?= {}

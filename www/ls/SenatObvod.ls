@@ -32,6 +32,17 @@ window.ig.SenatObvod = class SenatObvod
 
     @kandidatiElm = @element.append \div
       ..attr \class \kandidati
+    @diffElm = @kandidatiElm.append \div
+      ..attr \class \diff
+      ..append \div
+        ..attr \class \nadpis
+        ..html "Rozdíl"
+      ..append \div
+        ..attr \class \procent
+      ..append \div
+        ..attr \class \absolute
+      ..append \div
+        ..attr \class \arrow
     (err, data) <~ @resource.get
     @onDownload data
     @resource.on \downloaded @onDownload
@@ -89,17 +100,6 @@ window.ig.SenatObvod = class SenatObvod
         .selectAll \.fill .data [0, 1] .enter!append \div
           ..attr \class \fill
           ..style \background-color (d, i) ~> @kandidati[i].data.barva || '#999'
-    @diffElm = @kandidatiElm.append \div
-      ..attr \class \diff
-      ..append \div
-        ..attr \class \nadpis
-        ..html "Rozdíl"
-      ..append \div
-        ..attr \class \procent
-      ..append \div
-        ..attr \class \absolute
-      ..append \div
-        ..attr \class \arrow
 
     @kandidatElm
       ..select \div.name .html ~>

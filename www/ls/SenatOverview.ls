@@ -37,6 +37,11 @@ window.ig.SenatOverview = class SenatOverview
     (err, data) <~ @cacheItem.get
     @cacheItem.on \downloaded (data) ~>
       @data = data
+      for obvodId, obvod of data.obvody
+        @newSenat[obvodId].new = obvod
+        obvod.hlasu = 0
+        for kandidat in obvod.kandidati
+          obvod.hlasu += kandidat.hlasu
       @updateAllSenat!
     @data = data
     @newSenat = {}
@@ -58,7 +63,7 @@ window.ig.SenatOverview = class SenatOverview
         stranaObj: stranaObj
         obvodId: obvodId
     @obvodElements = {}
-    @senatObvody = for obvodId, obvod of data.obvody
+    for obvodId, obvod of data.obvody
       @newSenat[obvodId].new = obvod
       obvod.hlasu = 0
       for kandidat in obvod.kandidati

@@ -32,6 +32,10 @@ class CacheItem
     @downloading = no
     @data = null
     setInterval @~checkLiveIsWorking, 60_000
+    # <~ setTimeout _, 2000
+    # @url .= replace '/vysledky-2kolo/' '/vysledky/'
+    # @invalidate!
+
 
   get: (cb) ->
     if @valid
