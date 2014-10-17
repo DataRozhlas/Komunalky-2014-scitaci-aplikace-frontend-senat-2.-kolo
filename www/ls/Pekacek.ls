@@ -16,8 +16,21 @@ window.ig.Pekacek = class Pekacek
     @obvody_meta = window.ig.senat_obvody_meta
     @element = parentElement.append \div
       ..attr \class \pekacek
-    @element.append \h2
-      ..html "Získané mandáty"
+    _title = @element.append \h2
+    title = _title.append \span .html "Získané mandáty"
+    subtitle = _title.append \span
+      ..attr \class \subtitle
+      ..html "Zobrazit zisky a ztráty stran&hellip;"
+      ..on \click ~>
+        if @displayed == "mandates"
+          @displayed = "losses"
+          title.html "Zisky a ztráty stran"
+          subtitle.html "Zobrazit získané mandáty&hellip;"
+        else
+          @displayed = "mandates"
+          title.html "Získané mandáty"
+          subtitle.html "Zobrazit zisky a ztráty stran&hellip;"
+        @redraw!
     @displayed = "mandates"
     @cacheItem = @downloadCache.getItem "senat"
     (err, data) <~ @cacheItem.get
