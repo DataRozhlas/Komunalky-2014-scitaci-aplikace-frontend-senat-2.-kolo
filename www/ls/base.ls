@@ -5,9 +5,9 @@ init = ->
     element: container.append \div .attr \class "firstScreen"
   window.ig.downloadCache = downloadCache = new window.ig.DownloadCache
   window.ig.liveUpdater = liveUpdater = new window.ig.LiveUpdater downloadCache
-  # senatKosti = new window.ig.SenatKosti firstScreen.element, downloadCache
-    # ..init!
-  # new window.ig.Pekacek firstScreen.element, downloadCache
+  senatKosti = new window.ig.SenatKosti firstScreen.element, downloadCache
+    ..init!
+  new window.ig.Pekacek firstScreen.element, downloadCache
 
   senat = new window.ig.SenatOverview container, downloadCache
 
