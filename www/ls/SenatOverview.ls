@@ -20,7 +20,9 @@ window.ig.SenatOverview = class SenatOverview
       ..append \span
         ..attr \class "subtitle"
         ..html "Zobrazit dosavadní složení senátu&hellip;"
-        ..on \click @~showOldSenat
+        ..on \click ~>
+          @showOldSenat!
+          @scrollable.select 'h2 .subtitle' .remove!
     @obvody_meta = window.ig.senat_obvody_meta
     @newSenatElm = @scrollable.append \div
       ..attr \class "new-senat senat-overview"
@@ -205,7 +207,6 @@ window.ig.SenatOverview = class SenatOverview
       | a.ordering - b.ordering => that
       | a.contested - b.contested => that
       | a.obvodId - b.obvodId => that
-    console.log senatori.map (.ordering)
     row = -1
     col = -1.5
     lastStrana = null
