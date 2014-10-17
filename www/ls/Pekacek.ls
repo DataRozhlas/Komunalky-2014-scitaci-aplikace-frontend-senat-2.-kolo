@@ -180,8 +180,7 @@ window.ig.Pekacek = class Pekacek
         "#{baseline + shift}px"
       ..style \background-color ~>
         it.bilance.barva
-
-
+      ..attr \data-tooltip -> void
 
   resortStrany: ->
     @strany
