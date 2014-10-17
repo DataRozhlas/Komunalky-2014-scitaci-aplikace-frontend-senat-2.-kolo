@@ -89,6 +89,14 @@ window.ig.SenatObvod = class SenatObvod
         .selectAll \.fill .data [0, 1] .enter!append \div
           ..attr \class \fill
           ..style \background-color (d, i) ~> @kandidati[i].data.barva || '#999'
+    @diffElm = @kandidatiElm.append \div
+      ..attr \class \diff
+      ..append \div
+        ..attr \class \procent
+      ..append \div
+        ..attr \class \absolute
+      ..append \div
+        ..attr \class \arrow
 
     @kandidatElm
       ..select \div.name .html ~>
@@ -98,6 +106,16 @@ window.ig.SenatObvod = class SenatObvod
           "Zatím neznámý"
       ..select \div.absolute .html ~> " #{utils.formatNumber it.hlasu} hlasů"
       ..select \div.procent .html ~> " #{utils.percentage it.hlasu / celkemHlasu} %"
+    @diffElm
+      ..select \.procent .html ~>
+        p1 = @kandidati[0].hlasu / celkemHlasu
+        p2 = @kandidati[1].hlasu / celkemHlasu
+        "#{utils.percentage Math.abs p1 - p2}%"
+      ..select \.absolute .html ~>
+        d = Math.abs @kandidati[0].hlasu - @kandidati[1].hlasu
+        "#{utils.formatNumber d} hlasů"
+      ..classed \right  @kandidati[1].hlasu > @kandidati[0].hlasu
+      ..classed \left @kandidati[1].hlasu < @kandidati[0].hlasu
     @fillElm.style \width (d, i) ~>
         "#{@kandidati[i].hlasu / celkemHlasu * 100}%"
 

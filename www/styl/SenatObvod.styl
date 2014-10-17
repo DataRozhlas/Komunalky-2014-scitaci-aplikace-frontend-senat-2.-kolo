@@ -76,6 +76,33 @@ imgWidth = 90px
         left 50%
         margin-left -4px
         triangle(8px, 5px, 'top', ColorHeading)
+    .diff
+      position absolute
+      left 50%
+      top 90px
+      width 100px
+      margin-left -50px
+      text-align center
+      .procent
+        font-weight bold
+        font-size 18px
+      .absolute
+        margin-top 5px
+        font-weight normal
+        font-size 14px
+        font-variant small-caps
+      &.left .arrow
+        position absolute
+        left -10px
+        top 50%
+        margin-top -8px
+        triangle(10px, 16px, 'left', ColorHeading)
+      &.right .arrow
+        position absolute
+        right -10px
+        top 50%
+        margin-top -8px
+        triangle(10px, 16px, 'right', ColorHeading)
 
 
     .kandidat-0
