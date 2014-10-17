@@ -92,6 +92,9 @@ window.ig.SenatObvod = class SenatObvod
     @diffElm = @kandidatiElm.append \div
       ..attr \class \diff
       ..append \div
+        ..attr \class \nadpis
+        ..html "Rozdíl"
+      ..append \div
         ..attr \class \procent
       ..append \div
         ..attr \class \absolute
