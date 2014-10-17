@@ -7,7 +7,7 @@ senatStrany =
   "KDU-ČSL"  : zkratka: "KDU-ČSL",   color: \#FEE300, countOld: 0, countNew: 0, fallbackOrdering: 5
   "ODS"      : zkratka: "ODS",       color: \#1C76F0, countOld: 0, countNew: 0, fallbackOrdering: 6
   "TOP 09"   : zkratka: "TOP",       color: \#7c0042, countOld: 0, countNew: 0, fallbackOrdering: 7
-  "NEZ"      : zkratka: "NEZ",       color: \#999,    countOld: 0, countNew: 0, fallbackOrdering: 8
+  "NEZ"      : zkratka: "NEZ",       color: \#999,    countOld: 0, countNew: 0, fallbackOrdering: 99
 
 window.ig.SenatOverview = class SenatOverview
   (@parentElement, @downloadCache, @displaySwitcher) ->
@@ -104,7 +104,9 @@ window.ig.SenatOverview = class SenatOverview
         datum.stranaObj?countNew--
         datum.stranaObj = s
 
-    @senatori` (a, b) ->
+    @senatori.sort (a, b) ->
+      | a.stranaObj.fallbackOrdering == 99 => 1
+      | b.stranaObj.fallbackOrdering == 99 => -1
       | (b.stranaObj.countOld + b.stranaObj.countNew) - (a.stranaObj.countOld + a.stranaObj.countNew) => that
       | b.stranaObj.fallbackOrdering - a.stranaObj.fallbackOrdering => that
       | a.contested - b.contested => that
