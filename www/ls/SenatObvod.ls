@@ -41,7 +41,7 @@ window.ig.SenatObvod = class SenatObvod
     return unless @data
     @kandidati = @data.kandidati
     if @kandidati.length > 2 then @kandidati.length = 2
-    @kandidati.sort (a, b) -> b.hlasu - a.hlasu
+    @kandidati.sort (a, b) -> b.id - a.id
     @kandidatiElm.selectAll \span.kandidat .remove!
     celkemHlasu = 0
     @kandidati.forEach ~>
@@ -60,32 +60,47 @@ window.ig.SenatObvod = class SenatObvod
     @ucastFill.style \width ~>
       "#{100 * @data.volilo / @data.volicu}%"
     return unless @kandidati.0.hlasu
-    @kandidatiElm.selectAll \span.kandidat .data @kandidati .enter!append \span
+    @kandidatElm = @kandidatiElm.selectAll \span.kandidat .data @kandidati .enter!append \span
       ..attr \class (d, i) -> "kandidat kandidat-#i"
-      ..append \span
+      ..append \div
         ..attr \class \name
-        ..html ~>
-          if it.data
-            "#{it.data.jmeno} #{it.data.prijmeni}"
-          else
-            "Zatím neznámý"
-      ..append \span
-        ..attr \class \procent
-        ..html ~> " #{utils.percentage it.hlasu / celkemHlasu} %"
-      ..append \span
-        ..attr \class \strana-kost
-        ..style \background-color ~> it.data?barva || '#aaa'
-      ..append \span
+      ..append \div
         ..attr \class \strana
         ..html ~>
           if it.data
-            " (#{it.data.zkratka || it.data.strana})"
+            "#{it.data.zkratka || it.data.strana}"
           else
             void
-      ..append \span
-        ..attr \class \delim
-        ..html ", "
-      ..attr \data-tooltip ~> "#{it.hlasu} hlasů"
+      ..append \div
+        ..attr \class \procent
+      ..append \div
+        ..attr \class \absolute
+      ..append \img
+        ..attr \src ~> "./img/hlavy/#{@obvodId}-#{it.id}.jpg"
+    @kandidatiElm.append \div
+      ..attr \class \mid
+      ..html "50 %"
+      ..append \div
+        ..attr \class \arrow
+    @fillElm = @kandidatiElm.append \div
+      .attr \class \bar
+      .append \div
+        .attr \class \container
+        .selectAll \.fill .data [0, 1] .enter!append \div
+          ..attr \class \fill
+          ..style \background-color (d, i) ~> @kandidati[i].data.barva || '#999'
+
+    @kandidatElm
+      ..select \div.name .html ~>
+        if it.data
+          "#{it.data.jmeno} #{it.data.prijmeni}"
+        else
+          "Zatím neznámý"
+      ..select \div.absolute .html ~> " #{utils.formatNumber it.hlasu} hlasů"
+      ..select \div.procent .html ~> " #{utils.percentage it.hlasu / celkemHlasu} %"
+    @fillElm.style \width (d, i) ~>
+        "#{@kandidati[i].hlasu / celkemHlasu * 100}%"
+
 
   destroy: ->
     @element.remove!
