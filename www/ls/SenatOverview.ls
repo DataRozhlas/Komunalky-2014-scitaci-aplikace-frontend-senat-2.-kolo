@@ -94,6 +94,10 @@ window.ig.SenatOverview = class SenatOverview
         ..attr \class \old
         ..style \background-color (it, i) ->
           it.old.color || \#999
+      ..on \click ~>
+        window.ig.senat.highlight it.obvodId
+        window.location = '#senat-obv-' + it.obvodId
+
       ..attr \data-tooltip ~>
         out = ""
         out += "<b>Senátní obvod č. #{it.obvodId}: #{@obvody_meta[it.obvodId].nazev}</b><br>"

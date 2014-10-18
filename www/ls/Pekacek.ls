@@ -95,6 +95,9 @@ window.ig.Pekacek = class Pekacek
         "#{(Math.floor it.index / @kostInCol) * @kostSide}px"
       ..style \background-color ->
         it.new.data.barva || '#999'
+      ..on \click ~>
+        window.ig.senat.highlight it.obvodId
+        window.location = '#senat-obv-' + it.obvodId
       ..attr \data-tooltip ~>
         out = ""
         out += "<b>Senátní obvod č. #{it.obvodId}: #{@obvody_meta[it.obvodId].nazev}</b><br>"
