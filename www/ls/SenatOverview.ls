@@ -261,6 +261,7 @@ window.ig.SenatOverview = class SenatOverview
         out
 
   highlight: (obvodId) ->
+    return
     obvodId = obvodId.toString!
     for id, obvodElm of @obvodElements
       obvodElm.classed \highlight id == obvodId
