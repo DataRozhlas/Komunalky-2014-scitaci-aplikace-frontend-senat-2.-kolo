@@ -1,4 +1,16 @@
 utils = window.ig.utils
+koalice =
+  "Aschenbrenner" : "Koalice ODS a Koruna Česká"
+  "Gregora"       : "Koalice TOP 09 a STAN"
+  "Jahelka"       : "Koalice TOP 09 a STAN"
+  "Láska"         : "Koalice KDU-ČSL a SZ"
+  "Hampl"         : "Koalice KDU-ČSL a SZ"
+  "VOJTOVÁ"       : "Koalice TOP 09 a STAN"
+  "Klepš"         : "Koalice TOP 09 a STAN"
+  "Seitlová"      : "Koalice KDU-ČSL a SZ"
+  "Valenta"       : "Strana soukromníků České republiky"
+  "Vosecký"       : "Starostové pro Liberecký kraj"
+
 window.ig.SenatObvod = class SenatObvod
   (@parentElement, @obvodId) ->
     @senatori = window.ig.senatori
@@ -80,7 +92,10 @@ window.ig.SenatObvod = class SenatObvod
         ..attr \class \strana
         ..html ~>
           if it.data
-            "#{it.data.zkratka || it.data.strana}"
+            if koalice[it.data.prijmeni]
+              that
+            else
+              "#{it.data.zkratka || it.data.strana}"
           else
             void
       ..append \div
