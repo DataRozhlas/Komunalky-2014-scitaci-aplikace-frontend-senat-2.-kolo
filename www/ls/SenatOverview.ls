@@ -118,10 +118,9 @@ window.ig.SenatOverview = class SenatOverview
         s.countNew++
         datum.stranaObj?countNew--
         datum.stranaObj = s
-
     @senatori.sort (a, b) ->
-      | a.stranaObj.fallbackOrdering == 99 => 1
-      | b.stranaObj.fallbackOrdering == 99 => -1
+      | a.stranaObj.fallbackOrdering == 99 && b.stranaObj.fallbackOrdering != 99 => 1
+      | b.stranaObj.fallbackOrdering == 99 && a.stranaObj.fallbackOrdering != 99 => -1
       | (b.stranaObj.countOld + b.stranaObj.countNew) - (a.stranaObj.countOld + a.stranaObj.countNew) => that
       | b.stranaObj.fallbackOrdering - a.stranaObj.fallbackOrdering => that
       | a.contested - b.contested => that
