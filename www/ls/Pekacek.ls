@@ -208,6 +208,7 @@ window.ig.Pekacek = class Pekacek
     @data = data
     if @contestedObvody
       for obvodId, datum of @data.obvody
+        datum.kandidati.sort (a, b) -> b.hlasu - a.hlasu
         @contestedObvodyAssoc[obvodId].new = datum.kandidati.0
         @contestedObvodyAssoc[obvodId].new2 = datum.kandidati.1
     else
@@ -229,6 +230,7 @@ window.ig.Pekacek = class Pekacek
             @contestedObvodyAssoc[obvodId] = d
             @contestedObvody.push d
             d
+          @data.obvody[obvodId].kandidati.sort (a, b) -> b.hlasu - a.hlasu
           obvod.new = @data.obvody[obvodId].kandidati[0]
           obvod.new2 = @data.obvody[obvodId].kandidati[1]
   drawArrows: ->

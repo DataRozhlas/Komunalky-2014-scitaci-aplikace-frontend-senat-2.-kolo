@@ -60,7 +60,6 @@ class CacheItem
       if datum.kandidati.0.hlasu > datum.hlasu / 2
         datum.obvodDecided = true
       datum
-
     @valid = yes
     @downloading = no
     @emit \downloaded data
