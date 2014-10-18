@@ -1,7 +1,6 @@
 window.ig.LiveUpdater = class LiveUpdater
   (@downloadCache) ->
     @lastMessage = new Date!getTime!
-    return
     try
       es = new EventSource "/sse/"
       es.onmessage = (event) ~>
@@ -19,9 +18,8 @@ window.ig.LiveUpdater = class LiveUpdater
             @update @getObecId code
 
   isOnline: ->
-    # t = new Date!getTime!
-    # t - @lastMessage < 60_000
-    true
+    t = new Date!getTime!
+    t - @lastMessage < 60_000
 
   update: (dataType) ->
     return unless dataType
