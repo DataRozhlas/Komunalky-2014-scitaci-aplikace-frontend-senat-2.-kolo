@@ -44,6 +44,10 @@ window.ig.SenatKosti = class SenatKosti implements utils.supplementalMixin
       @heading.html "Celkové výsledky senatních voleb"
 
     @obvodyElms
+      ..on \click ~>
+        window.ig.senat.highlight it.data.obvodId
+        window.location = '#senat-obv-' + it.data.obvodId
+
       ..attr \data-tooltip (obvod) ~>
         strana = barvy[obvod.data.obvodId] || defaultBarva
         out = "<b>Senátní obvod č. #{obvod.data.obvodId}: #{@obvody_meta[obvod.data.obvodId].nazev}</b><br>"

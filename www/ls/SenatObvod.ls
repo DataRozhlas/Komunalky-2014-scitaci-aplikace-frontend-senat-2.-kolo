@@ -5,6 +5,7 @@ window.ig.SenatObvod = class SenatObvod
     @resource = window.ig.downloadCache.getItem "senat" # fuck DI!
     @element = @parentElement.append \div
       ..attr \class \senat-obvod
+      ..attr \id "senat-obv-#{obvodId}"
     supplemental = @element.append \div
       ..attr \class "supplemental supplemental-mini"
       ..append \div

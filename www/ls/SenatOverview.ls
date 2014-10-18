@@ -78,7 +78,7 @@ window.ig.SenatOverview = class SenatOverview
         ..append \span
           ..attr \class \popisek
           ..html "Celorepublikové výsledky"
-          ..on \click ~> @scrollable.0.0.scrollTop = 0
+          ..on \click ~> window.location = '#'
       new window.ig.SenatObvod obvodElm, obvodId
     @drawAllSenat!
     @updateAllSenat!

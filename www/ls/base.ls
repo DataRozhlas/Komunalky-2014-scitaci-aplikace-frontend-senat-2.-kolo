@@ -9,7 +9,7 @@ init = ->
     ..init!
   new window.ig.Pekacek firstScreen.element, downloadCache
 
-  senat = new window.ig.SenatOverview container, downloadCache
+  window.ig.senat = senat = new window.ig.SenatOverview container, downloadCache
 
 window.ig.strany = strany = {}
 lf = String.fromCharCode 13
