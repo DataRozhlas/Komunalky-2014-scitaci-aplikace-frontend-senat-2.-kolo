@@ -53,13 +53,16 @@ window.ig.Pekacek = class Pekacek
     for obvod in @contestedObvody
       zkratka = if senatStrany[obvod.new.data.zkratka] then obvod.new.data.zkratka else "NEZ"
       stranyZiskyAssoc[zkratka] ?= []
+      continue if obvod.new.hlasu == 0
       stranyZiskyAssoc[zkratka].push obvod
     stranyZisky = for zkratka, obvody of stranyZiskyAssoc
       {zkratka, zisk: obvody.length, obvody}
     stranyZisky.sort (a, b) ->
       | a.zkratka == "NEZ" => 1
       | b.zkratka == "NEZ" => -1
-      | _ => b.zisk - a.zisk
+      | b.zisk - a.zisk => that
+      | a.zkratka > b.zkratka => 1
+      | otherwise => -1
     stranyZiskyIndices = {}
     for {zkratka, obvody}:strana, index in stranyZisky
       strana.index = index
