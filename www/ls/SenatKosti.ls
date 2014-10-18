@@ -77,6 +77,5 @@ window.ig.SenatKosti = class SenatKosti implements utils.supplementalMixin
     return unless data
     @data = data
     for datum, index in @data.obvody_array
-      datum.kandidati.sort (a, b) -> b.hlasu - a.hlasu
       @obvody[index].data = datum
     @redraw!

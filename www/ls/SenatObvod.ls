@@ -63,7 +63,7 @@ window.ig.SenatObvod = class SenatObvod
   onDownload: (data) ~>
     @data = data.obvody[@obvodId]
     return unless @data
-    @kandidati = @data.kandidati
+    @kandidati = @data.kandidati.slice!
     if @kandidati.length > 2 then @kandidati.length = 2
     @kandidati.sort (a, b) -> b.id - a.id
     @kandidatiElm.selectAll \span.kandidat .remove!
