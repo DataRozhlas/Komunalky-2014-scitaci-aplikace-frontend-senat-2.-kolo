@@ -229,7 +229,7 @@ window.ig.SenatOverview = class SenatOverview
         @oldSenatPopisky.append \div
           ..html ->
             s = senator.old.strana
-            if s == "STAN" then s = "Nezávislí"
+            if s == "STAN" then s = "Ostatní"
             s
           ..style \left "#{col * kostSide}px"
           ..attr \class \popisek
