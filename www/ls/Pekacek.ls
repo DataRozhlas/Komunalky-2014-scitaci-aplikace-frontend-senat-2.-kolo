@@ -195,7 +195,7 @@ window.ig.Pekacek = class Pekacek
         ..attr \class \strana
         ..append \div
           ..attr \class \popisek
-          ..append \span .html (.zkratka)
+          ..append \span .html -> if it.zkratka == "NEZ" then "Ostatní" else it.zkratka
       ..exit!remove!
       ..style \left ~> "#{(@kostInCol + 1) * it.index * (@kostSide + 1)}px"
 

@@ -156,7 +156,7 @@ window.ig.SenatOverview = class SenatOverview
       ..exit!remove!
 
     @senatPopisky.selectAll "div.popisek"
-      ..select \.content .html (.zkratka)
+      ..select \.content .html  -> if it.zkratka == "NEZ" or it.zkratka == "Nezávislí" then "Ostatní" else it.zkratka
       ..style \left -> "#{it.col * kostSide}px"
 
     @newSenatObvody
