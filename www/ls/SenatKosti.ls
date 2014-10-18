@@ -23,12 +23,8 @@ window.ig.SenatKosti = class SenatKosti implements utils.supplementalMixin
         ..attr \class \arrow
 
     sx = 800 / 509.8714
-    @svg = @element.append \svg
-      ..attr \width 509.8714 * sx
-      ..attr \height 157.29874 * sx
-      ..append \g
-        ..attr \transform "scale(#sx)"
-        ..html ig.data.obvody_svg
+    @svg = @element.append \div
+      ..html "<svg width='#{509.8714 * sx}' height='#{157.29874 * sx}'><g transform='scale(#sx)'>#{ig.data.obvody_svg}</g></svg>"
     @obvody = for i in [0 til 27]
       obvodId = (i + 1) * 3
       d = {data: null}
