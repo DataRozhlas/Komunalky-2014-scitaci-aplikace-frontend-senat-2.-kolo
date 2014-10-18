@@ -61,7 +61,7 @@ window.ig.SenatKosti = class SenatKosti implements utils.supplementalMixin
                 "Zatím neznámý"
             .join "<br>"
         out += "<br>Obvod obhajuje #{window.ig.strany[strana].zkratka}, sečteno je #{utils.percentage obvod.data.okrsky_spocteno / obvod.data.okrsky_celkem}&nbsp;% hlasů"
-        out += "<br><em>Klikněte pro podrobné výsledky</em>"
+        out += "<br><em>Podrobné výsledky najdete níže na stránce</em>"
         out
       ..transition!
         ..duration 600
